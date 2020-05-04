@@ -12,4 +12,4 @@
 # CI pipeline
 #### Tests are integrated in Shippable CI
 
-[![Run Status](https://api.shippable.com/projects/5eb00a65ee5f1f0008f36499/badge?branch=master)]()
+[![Run Status](https://api.shippable.com/projects/5eb00a65ee5f1f0008f36499/badge?branch=feature/sydneyweather)](https://app.shippable.com/github/keselva/weather-api-tests/dashboard)
