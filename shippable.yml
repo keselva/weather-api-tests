@@ -1,0 +1,19 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+env:
+  global:
+    - secure: NOyBKYZP2O3BmejpGMTp4E+ZAzAggNBckexAGYpEG+jn6/8Xg9CSuhFXkcQlhkKbVnQ3Ag1n6z3LRlFRARPz/yHSruEZdHld6wXLQ4q1tv+UFjpsmvwFru3gN3fTlZgF4rEQsq4YznukIFWTp6mBXEKQ3yZkzf3Bgt46g/PkdlOlO6IC0WScDmfOnMse7kjmZ05RhhTAUxXJH9twQDSZErTXSRJTSk4NP5KO18UA9wHkt5neVzLVGW367Ob8IsvCcQqG64RmeVacQG09nh1TkX13vjBKyYbEqyUeVRsI+P/0Cx3UunabViMDyKQEZg1R6vCZ1QNRIONP9XBeJ3u/mA==
+    - TEST_RESULTS_DIR=$SHIPPABLE_REPO_DIR/shippable/testresults
+    - CODE_COVERAGE_DIR=$SHIPPABLE_REPO_DIR/shippable/codecoverage
+
+build:
+
+  ci:
+    - mkdir -p shippable/codecoverage
+    - mkdir -p shippable/testresults
+    - mvn clean test -Dapikey=$apikey
+    - cp -r target/surefire-reports/features.compareresponses.html shippable/codecoverage
+    - cp -r target/surefire-reports/TEST-au.com.config.TestRunner.xml shippable/testresults
