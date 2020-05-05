@@ -4,21 +4,16 @@ Feature: Compare Sydney weather responses
     * def getDate =
       """
       function() {
-        var SimpleDateFormat = Java.type('java.text.SimpleDateFormat');
-        var sdf = new SimpleDateFormat(pattern);
-        var Calendar = Java.type('java.util.Calendar');
-        var calendar = Calendar.getInstance();
-        var date = new java.util.Date();
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        date = calendar.getTime();
-        return sdf.format(date)
+        var DateUtil = Java.type('au.com.config.DateUtil');
+        var dateUtil = new DateUtil();
+        return dateUtil.getNextDay();
       }
       """
     * def tomorrow = getDate()
 
-  Scenario: Compare min and max temp in Sydney for next day
-    * def jsonresult = call read('commons/weatherapi.feature')  { path : '/v1/forecast.json' }
-    * def xmlresult = call read('commons/weatherapi.feature')  { path : '/v1/forecast.xml' }
+  Scenario Outline: Compare min and max temp in <city> for next day
+    * def jsonresult = call read('commons/weatherapi.feature')  { path : '/v1/forecast.json' , city : '#(city)'}
+    * def xmlresult = call read('commons/weatherapi.feature')  { path : '/v1/forecast.xml' , city : '#(city)'}
     * json jsonResponse = karate.jsonPath(jsonresult.response.forecast.forecastday, "$[?(@.date =='" + tomorrow + "')]")
     * json xmlResponse = karate.jsonPath(xmlresult.response.root.forecast.forecastday, "$[?(@.date =='" + tomorrow + "')]")
     * string jsonmaxTemp = jsonResponse[0].day.maxtemp_c
@@ -27,3 +22,10 @@ Feature: Compare Sydney weather responses
     * string xmlminTemp = xmlResponse[0].day.mintemp_c
     * match jsonmaxTemp == xmlmaxTemp
     * match jsonminTemp == xmlminTemp
+
+    Examples:
+      | city      |
+      | sydney    |
+      | perth     |
+      | melbourne |
+      | cairns    |

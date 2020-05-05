@@ -14,6 +14,6 @@ build:
   ci:
     - mkdir -p shippable/codecoverage
     - mkdir -p shippable/testresults
-    - mvn clean install -Dapikey=$apikey
+    - mvn clean test -Dapikey=$apikey
     - cp -r target/surefire-reports/features.compareresponses.html shippable/codecoverage
     - cp -r target/surefire-reports/TEST-au.com.config.TestRunner.xml shippable/testresults
